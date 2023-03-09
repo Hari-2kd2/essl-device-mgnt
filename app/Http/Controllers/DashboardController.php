@@ -54,9 +54,9 @@ class DashboardController extends Controller
 
     public function editDevice(Request $request)
     {
-
+        $deviceStatusType = EsslDevice::select('device_type', 'status')->get();
         $essl = EsslDevice::where('essl_device_id', $request->id)->first();
-        return view('superadmin.parts.deviceUpdate', compact('essl'));
+        return view('superadmin.parts.deviceUpdate', compact('essl', 'deviceStatusType'));
     }
 
     public function updateDevice(Request $request)
@@ -64,7 +64,8 @@ class DashboardController extends Controller
         $update = EsslDevice::where('essl_device_id', $request->essl_device_id)->update([
             'ip_address' => $request->ip_address,
             'description' => $request->description,
-            'status' => $request->status
+            'status' => $request->status,
+            'device_type' => $request->device_type
         ]);
         return response()->json([
             'status' => true,
@@ -94,6 +95,7 @@ class DashboardController extends Controller
             },
             'description' => 'required',
             'status' => 'required',
+            'device_type' => 'required|string',
 
         ]);
         if ($validator->fails()) {
@@ -102,8 +104,13 @@ class DashboardController extends Controller
                 'message' => $validator->getMessageBag()->first()
             ], 200);
         }
-        $user = EsslDevice::create(
-            $validator->validated()
+        $device = EsslDevice::create(
+            [
+                'ip_address' => $request->ip_address,
+                'description' => $request->description,
+                'status' => $request->status,
+                'device_type' => $request->device_type
+            ]
         );
         return response()->json([
             'status' => true,
@@ -148,7 +155,7 @@ class DashboardController extends Controller
             },
             'from_date' => 'required',
             'to_date' => 'required',
-            // 'type' => 'required'
+
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -167,14 +174,17 @@ class DashboardController extends Controller
 
         if ($body->status == true) {
             foreach ($body->data as $key => $data) {
-                $exist = DB::table('ms_sqls')->where('ID', $data->sdwEnrollNumber)->where('ip_address', $request->ip_address)->where('datetime', $data->logs)->first();
+                $checkType = EsslDevice::where('ip_address', $request->ip_address)->select('device_type')->first();
+
+                $exist = DB::table('ms_sqls')->where('ID', $data->sdwEnrollNumber)->where('device_name', $request->ip_address)->where('datetime', $data->logs)->first();
 
                 if (!$exist) {
                     DB::table('ms_sqls')->insert([
                         'ID' => $data->sdwEnrollNumber,
-                        'ip_address' =>  $request->ip_address,
+                        'device_name' =>  $request->ip_address,
                         'datetime' => $data->logs,
-                        'type' => $request->type,
+                        'status' => 1,
+                        'type' => $checkType->device_type,
                         'punching_time' => Carbon::now(),
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now(),

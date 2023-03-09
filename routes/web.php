@@ -61,7 +61,7 @@ Route::post('/upload_user', [EsslUserController::class, 'uploadUser'])->name('up
 Route::get('/device_user', [EsslUserController::class, 'deviceUser'])->name('deviceUser');
 
 Route::get('/storeUserLog', [DashboardController::class, 'storeUserLog'])->name('storeUserLog');
-Route::post('/store_logs_by_date', [DashboardController::class, 'storeLogsByDate'])->name('DevicestoreLogsByDate');
+Route::post('/store_logs_by_date', [DashboardController::class, 'storeLogsByDate'])->name('storeLogsByDate');
 Route::get('/download_user', [EsslUserController::class, 'downloadUser'])->name('downloadUser');
 Route::get('/get_download_user', [EsslUserController::class, 'getDownloadUser'])->name('getDownloadUser');
 Route::post('/essl_upload_user', [EsslUserController::class, 'esslUploadUser'])->name('esslUploadUser');

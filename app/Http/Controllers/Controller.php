@@ -21,24 +21,22 @@ class Controller extends BaseController
         $devices = EsslDevice::pluck('ip_address')->toArray();
         $onlineDevices = [];
         foreach ($devices as $device) {
-            $response = Http::get('http://localhost:8282/GetLogsbydate?ip=' . $device . '&fromdate=' . date('d-m-Y', strtotime('+1 days')) . '&todate=' . date('d-m-Y', strtotime('+1 days')) . '');
+            $response = Http::get('http://localhost:8282/ping?ip=' . $device . '');
             $body = json_decode($response->body());
             $BodyData =  $body;
-
             if ($BodyData->status == true) {
                 array_push($onlineDevices, $device);
             }
         }
-
         return $this->GetLogsByDate($onlineDevices);
     }
 
 
 
-    public function GetLogsByDate()
+    public function GetLogsByDate($onlineDevices)
     {
         set_time_limit(0);
-        $onlineDevices = EsslDevice::pluck('ip_address')->toArray();
+        // $onlineDevices = EsslDevice::pluck('ip_address')->toArray();
 
         foreach ($onlineDevices as $key => $device) {
 

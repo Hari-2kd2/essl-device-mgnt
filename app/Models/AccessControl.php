@@ -16,7 +16,7 @@ class AccessControl extends Model
 
     public function device()
     {
-        return $this->hasMany(EsslDevice::class, 'essl_device_id', 'essl_device_id');
+        return $this->hasOne(EsslDevice::class, 'essl_device_id', 'essl_device_id');
     }
     public function user()
     {

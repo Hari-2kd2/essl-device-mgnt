@@ -75,25 +75,32 @@
 @endsection
 @push('scripts')
     <script>
-        $(function() {
-            $('.uploadUser').on('click', function(e) {
-                e.preventDefault();
-                $ip = $('.ip_address').val();
-               
-                $('#loader').show();
-                $.ajax({
-                    type: "POST",
-                    url: "essl_upload_user",
-                    data: {
-                        ip_address: ip,
-                    },
-                    success: function(response) {
-                        console.log(response);
-                        $('#loader').hide();
-                    }
-                });
-            });
+        $('.uploadUser').on('click', function(e) {
+            e.preventDefault();
+            $ip = $('.ip_address').val();
+            getUserData($ip);
         });
+
+        function getUserData(ip) {
+            $('#loader').show();
+            $.ajax({
+                type: "POST",
+                url: "essl_upload_user",
+                data: {
+                    ip_address: ip,
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.status == true) {
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                    $('#loader').hide();
+                }
+            });
+
+        }
         $('#ipaddress').change(function(e) {
             e.preventDefault();
             $ip = $('#ipaddress').val();

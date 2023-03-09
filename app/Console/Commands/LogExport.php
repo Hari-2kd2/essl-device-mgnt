@@ -35,14 +35,15 @@ class LogExport extends Command
             $serverID = 0;
         }
 
+
         $local_logID = BiometricLog::orderBy('primary_id', 'DESC')->first();
 
         if ($serverID && $local_logID->primary_id == $serverID) {
 
             return true;
         }
-       
-        BiometricLog::where('primary_id', '>', $serverID)->orderBy('primary_id', 'ASC')->chunk(5, function ($device_log) {
+
+        BiometricLog::where('primary_id', '<', $serverID)->orderBy('primary_id', 'ASC')->chunk(5, function ($device_log) {
             foreach ($device_log as $index => $logs) {
 
                 try {
@@ -51,6 +52,8 @@ class LogExport extends Command
                     $response = $client->request('POST', Common::liveurl() . "importlogs", [
                         'form_params' => [
                             'ID' => $logs->ID,
+                            'type' => $logs->type,
+                            'status' => $logs->status,
                             'evtlguid' => $logs->evtlguid,
                             'devdt' => $logs->devdt,
                             'devuid' => $logs->devuid,
@@ -59,14 +62,11 @@ class LogExport extends Command
                         ],
 
                     ]);
-
                 } catch (\Throwable $th) {
                     info(['index' => $index]);
                     info($th->getMessage());
                 }
-
             }
-
         });
 
         DB::commit();

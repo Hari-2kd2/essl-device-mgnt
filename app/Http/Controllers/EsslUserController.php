@@ -22,20 +22,29 @@ class EsslUserController extends Controller
 
         $allUsers = EsslUser::pluck('essl_user_id')->toArray();
         $newUsers = array_diff($allUsers, $accessControl);
-
-        $newUsers = EsslUser::whereIn('essl_user_id', array_values($newUsers))->get()->toArray();
+        $newUsers = EsslUser::whereIn('essl_user_id', $newUsers)->get()->toArray();
         $dataSet = [];
         $msg = '';
 
-        foreach ($newUsers as $key => $user) {
-
+        foreach ($newUsers as $user) {
             $master =   AccessControl::where('essl_user_id', $user['essl_user_id'])->where('status', 1)->with('device')->first();
+            $newDevice = EsslDevice::where('ip_address', $request->ip_address)->first();
+            $isThere = AccessControl::where('essl_user_id', $user['essl_user_id'])->where('essl_device_id', $newDevice->essl_device_id)->first();
+
+            $accessControlData = [
+                'essl_user_id' => $user['essl_user_id'],
+                'essl_device_id' => $newDevice->essl_device_id,
+                'status' => 2
+            ];
+
+            $isThere ? $isThere->update($accessControlData) : AccessControl::create($accessControlData);
 
             unset($user['essl_user_id']);
             unset($user['ip']);
             unset($user['created_at']);
             unset($user['updated_at']);
-            $user['fromip'] = $master->device[0]->ip_address;
+
+            $user['fromip'] = $master->device->ip_address;
             $user['toip'] = $request->ip_address;
 
             $dataSet[] = $user;
@@ -74,24 +83,29 @@ class EsslUserController extends Controller
             $device = $esslDevice->where('ip_address', $request->ip_address)->first();
 
             foreach ($body->Fingerlist as $key => $userList) {
-                $exist = EsslUser::where('sdwEnrollNumber', $userList->sdwEnrollNumber)->first();
-                if (!$exist) {
-                    $users[$key] = EsslUser::updateOrcreate([
-                        'ip' => $request->ip_address,
-                        'sdwEnrollNumber' => $userList->sdwEnrollNumber,
-                        'sName' => $userList->sName,
-                        'idwFingerIndex' => $userList->idwFingerIndex,
+                // $exist = EsslUser::where('sdwEnrollNumber', $userList->sdwEnrollNumber)->first();
+                // if (!$exist) {
+                $users[$key] = EsslUser::updateOrcreate([
+                    'ip' => $request->ip_address,
+                    'sdwEnrollNumber' => $userList->sdwEnrollNumber,
+                    'sName' => $userList->sName,
+                    'idwFingerIndex' => $userList->idwFingerIndex,
 
-                    ]);
-
+                ]);
+                if ($users[$key]['id']) {
                     $accessControl[] = AccessControl::updateOrCreate([
                         'essl_device_id' => $device->essl_device_id,
                         'essl_user_id' => $users[$key]['id'],
                     ]);
+                } else {
+                    $accessControl[] = AccessControl::updateOrCreate([
+                        'essl_device_id' => $device->essl_device_id,
+                        'essl_user_id' => $users[$key]['essl_user_id'],
+                    ]);
                 }
             }
             $deviceAddress = EsslDevice::where('ip_address', $request->ip_address)->select('ip_address')->first();
-            $employeeDetails = EsslUser::all();
+            $employeeDetails = EsslUser::where('ip', $request->ip_address)->get();
 
             return view('superadmin.employeeDetails', compact('employeeDetails', 'deviceAddress'));
         } else {

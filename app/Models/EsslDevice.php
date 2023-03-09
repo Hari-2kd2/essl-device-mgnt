@@ -13,5 +13,6 @@ class EsslDevice extends Model
         'ip_address',
         'description',
         'status',
+        'device_type'
     ];
 }
