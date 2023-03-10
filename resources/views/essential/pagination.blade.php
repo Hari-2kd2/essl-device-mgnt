@@ -1,4 +1,4 @@
-@if ($user->total() == 0)
+@if ($getdeviceUser->total() == 0)
     <div class="grid grid-cols-1 text-center pt-20">
         <div class="grid place-items-center w-full">
             {{-- <img src="images/nodata.png" alt="" class="w-96 h-auto"> --}}
@@ -12,21 +12,21 @@
     <nav class="flex items-center justify-between p-4" aria-label="Table navigation">
         <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span
                 class="font-semibold text-gray-900 dark:text-white">
-                @if ($user->nextPageUrl() == null && $user->currentPage() == 1)
-                    {{ $user->currentPage() * PER_PAGE_LIMIT - (PER_PAGE_LIMIT - 1) . ' - ' . $user->total() }}
-                @elseif ($user->nextPageUrl() == null && $user->currentPage() != 1)
-                    {{ $user->currentPage() * PER_PAGE_LIMIT - (PER_PAGE_LIMIT - 1) . ' - ' . $user->total() }}
+                @if ($getdeviceUser->nextPageUrl() == null && $getdeviceUser->currentPage() == 1)
+                    {{ $getdeviceUser->currentPage() * PER_PAGE_LIMIT - (PER_PAGE_LIMIT - 1) . ' - ' . $getdeviceUser->total() }}
+                @elseif ($getdeviceUser->nextPageUrl() == null && $getdeviceUser->currentPage() != 1)
+                    {{ $getdeviceUser->currentPage() * PER_PAGE_LIMIT - (PER_PAGE_LIMIT - 1) . ' - ' . $getdeviceUser->total() }}
                 @else
-                    {{ $user->currentPage() * PER_PAGE_LIMIT - (PER_PAGE_LIMIT - 1) . ' - ' . $user->currentPage() * PER_PAGE_LIMIT }}
+                    {{ $getdeviceUser->currentPage() * PER_PAGE_LIMIT - (PER_PAGE_LIMIT - 1) . ' - ' . $getdeviceUser->currentPage() * PER_PAGE_LIMIT }}
                 @endif
 
             </span>
-            of <span class="font-semibold text-gray-900 dark:text-white">{{ $user->total() }}</span>
+            of <span class="font-semibold text-gray-900 dark:text-white">{{ $getdeviceUser->total() }}</span>
         </span>
         <ul class="pagination inline-flex items-center -space-x-px">
-            @if ($user->currentPage() != 1)
+            @if ($getdeviceUser->currentPage() != 1)
                 <li>
-                    <a href={{ $user->url($user->currentPage() - 1) }}
+                    <a href={{ $getdeviceUser->url($getdeviceUser->currentPage() - 1) }}
                         class="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-muted_hover rounded-l-lg hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <span class="sr-only">Previous</span>
                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
@@ -37,7 +37,7 @@
                         </svg>
                     </a>
                 </li>
-                @if ($user->currentPage() >= 3)
+                @if ($getdeviceUser->currentPage() >= 3)
                     <li>
                         <a href="#"
                             class="px-3 py-2 leading-tight text-gray-500 bg-white border border-muted_hover hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
@@ -45,25 +45,25 @@
                 @endif
 
                 <li>
-                    <a href={{ $user->url($user->currentPage() - 1) }}
-                        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-muted_hover hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ $user->currentPage() - 1 }}</a>
+                    <a href={{ $getdeviceUser->url($getdeviceUser->currentPage() - 1) }}
+                        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-muted_hover hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ $getdeviceUser->currentPage() - 1 }}</a>
                 </li>
             @endif
             <li>
                 <a href="#" aria-current="page"
-                    class="px-3 py-2 text-gray-700 border border-muted_hover bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">{{ $user->currentPage() }}</a>
+                    class="px-3 py-2 text-gray-700 border border-muted_hover bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">{{ $getdeviceUser->currentPage() }}</a>
             </li>
-            @if ($user->nextPageUrl() != null)
+            @if ($getdeviceUser->nextPageUrl() != null)
                 <li>
-                    <a href={{ $user->url($user->currentPage() + 1) }}
-                        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-muted_hover hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ $user->currentPage() + 1 }}</a>
+                    <a href={{ $getdeviceUser->url($getdeviceUser->currentPage() + 1) }}
+                        class="px-3 py-2 leading-tight text-gray-500 bg-white border border-muted_hover hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ $getdeviceUser->currentPage() + 1 }}</a>
                 </li>
                 <li>
                     <a href="#"
                         class="px-3 py-2 leading-tight text-gray-500 bg-white border border-muted_hover hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
                 </li>
                 <li>
-                    <a href={{ $user->url($user->currentPage() + 1) }}
+                    <a href={{ $getdeviceUser->url($getdeviceUser->currentPage() + 1) }}
                         class="block px-3 py-2 leading-tight text-gray-500 bg-white border border-muted_hover rounded-r-lg hover:bg-muted_hover hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <span class="sr-only">Next</span>
                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"

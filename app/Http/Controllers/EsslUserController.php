@@ -215,8 +215,9 @@ class EsslUserController extends Controller
     }
     public function deviceUser(Request $request)
     {
+
         $ipAddress = EsslDevice::all();
-        $getdeviceUser = EsslUser::where('ip', $request->ip_address)->get();
+        $getdeviceUser =  EsslUser::paginate(PER_PAGE_LIMIT);
         return view("superadmin.parts.downloadUserTable", compact('getdeviceUser', 'ipAddress'));
     }
 }

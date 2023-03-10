@@ -17,7 +17,7 @@
                             </a>
                         </li>
                         <li>
-                            {{-- <div class="flex items-center">
+                            <div class="flex items-center">
                                 <svg aria-hidden="true" class="w-6 h-6 text-gray-400" fill="currentColor"
                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -26,14 +26,14 @@
                                 </svg>
                                 <a href="{{ route($route) }}"
                                     class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2 dark:text-gray-400 dark:hover:text-white">{{ $breadcum }}</a>
-                            </div> --}}
+                            </div>
                         </li>
                     </ol>
                 </nav>
             </div>
 
             <div class="ml-auto  flex flex-row ">
-                <div class="flex items-center">
+                <div class="flex items-center hidden">
                     <label for="search" class="sr-only">Search</label>
                     <div class="relative w-full">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -52,7 +52,7 @@
 
 
 
-                <button type="button" id="dropdown-button" data-dropdown-toggle="dropdown"
+                <button type="button" id="dropdown-button" data-dropdown-toggle="dropdown" hidden
                     class="py-2.5 px-2.5 mt-2 mb-2 ml-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                     <svg class="w-4 h-4 dark:text-white" fill="currentColor" stroke="currentColor" viewBox="0 0 448 512"
                         xmlns="http://www.w3.org/2000/svg">

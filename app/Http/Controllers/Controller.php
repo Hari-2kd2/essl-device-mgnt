@@ -11,10 +11,25 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Http;
 
+
+define('PAGE_LIMIT', 15);
+define('PER_PAGE_LIMIT', 10);
+define('TABLE_SECRET', "Asdf@12345");
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public static function successMessage($message)
+    {
+        return response()->json(
+            [
+                'status' => true,
+                'message'  => $message
+            ],
+            200
+        );
+    }
     public function test()
     {
 

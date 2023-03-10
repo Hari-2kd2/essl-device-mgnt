@@ -1,5 +1,5 @@
 @extends('superadmin.parts.main', [
-    'breadcum' => 'Device',
+    'breadcum' => 'Device Management',
     'route' => 'device',
 ])
 
@@ -34,17 +34,6 @@
                             d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
                     </svg>
                 </button>
-                <div class="w-48">
-                    <select id="ipaddress" name="ipaddress"
-                        class="w-48 py-2.5 px-2.5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-muted_hover hover:text-primary focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <option value="0" selected disabled>Select Ping Device</option>
-                        @foreach ($ipAddress as $address)
-                            <option value={{ $address->ip_address }}> {{ $address->ip_address }}</option>
-                        @endforeach
-
-                    </select>
-                </div>
-
             </div>
         </div>
         <div class="flex flex-col w-full" id="essls">
@@ -63,7 +52,6 @@
         });
 
         function getData(ip) {
-            $('#loader').show();
             $.ajax({
                 type: "GET",
                 url: "ping_device",
@@ -76,7 +64,6 @@
                     } else {
                         toastr.error(response);
                     }
-                    $('#loader').hide();
                 }
             });
 
@@ -109,6 +96,25 @@
                 url: "get_device",
                 success: function(response) {
                     $('#essls').html(response);
+                }
+            });
+        }
+
+        function PingDevice(ip) {
+            $('#loader').show();
+            $.ajax({
+                type: "GET",
+                url: "ping_device",
+                data: {
+                    ip_address: ip,
+                },
+                success: function(response) {
+                    if (response == 'Success') {
+                        toastr.success(response);
+                    } else {
+                        toastr.error(response);
+                    }
+                    $('#loader').hide();
                 }
             });
         }
@@ -301,7 +307,7 @@
                                 Address
                             </label>
                             <input type="text" name="ip_address" id="ip_address"
-                                class="mb-2 bg-muted border border-muted_hover text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                class="mb-1 bg-muted border border-muted_hover text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                 placeholder="0.0.0.0" required>
                         </div>
                         <div class="">
@@ -320,7 +326,7 @@
                             </label>
                             <select name="device_type" id="device_type"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option>Pls Select One</option>
+                                <option>Please Select</option>
                                 <option value="IN">IN</option>
                                 <option value="OUT">OUT</option>
                                 <option value="IN/OUT">IN/OUT</option>
@@ -330,7 +336,7 @@
 
                         <div>
                             <label for="name"
-                                class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Discription
+                                class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Description
                             </label>
 
                             <input type="text" name="description" id="description" maxlines="4"

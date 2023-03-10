@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EsslUserController;
@@ -22,6 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::get('/optimize', function () {
     $cache  = Artisan::call('optimize:clear');
     $cache  = Artisan::call('optimize');
@@ -29,7 +34,7 @@ Route::get('/optimize', function () {
 });
 // Route::get('/device_status', [DashboardController::class, 'deviceStatus'])->name('deviceStatus');
 // Route::get('/get_user', [EsslUserController::class, 'getUser'])->name('getUser');
- Route::post('/delete_user', [EsslUserController::class, 'deleteUser'])->name('deleteUser');
+Route::post('/delete_user', [EsslUserController::class, 'deleteUser'])->name('deleteUser');
 // Route::post('/storeLogsByDate', [DashboardController::class, 'storeLogsByDate'])->name('storeLogsByDate');
 // Route::get('/ping_device', [DashboardController::class, 'pingDevice'])->name('pingDevice');
 // Route::get('/download_user', [EsslUserController::class, 'downloadUser'])->name('pingDevice');

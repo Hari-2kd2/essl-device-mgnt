@@ -1,5 +1,5 @@
 @extends('superadmin.parts.main', [
-    'breadcum' => 'UserManagment',
+    'breadcum' => 'DeviceUser',
     'route' => 'userManagement',
 ])
 

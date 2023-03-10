@@ -27,7 +27,7 @@
                         Address
                     </label>
                     <input type="text" name="ip_address" id="ip_address" value="{{ $essl->ip_address }}"
-                        class="mb-2 bg-muted border border-muted_hover text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                        class="mb-1 bg-muted border border-muted_hover text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                         placeholder="0.0.0.0" required>
                 </div>
                 <div class="">

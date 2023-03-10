@@ -1,6 +1,6 @@
 @extends('superadmin.parts.main', [
-    'breadcum' => 'userCopy',
-    'route' => 'userCopy',
+    'breadcum' => 'UserCopied',
+    'route' => 'UserCopy',
 ])
 @section('content')
     <div class="flex flex-col space-y-2">
@@ -16,21 +16,8 @@
                         fill="currentFill" />
                 </svg>
             </div>
-            <div class="flex flex-row">
-                <div class="w-48">
-                    <select id="ipaddress" name="ipaddress"
-                        class="ipaddress w-48 py-2.5 px-2.5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-muted_hover hover:text-primary focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                        <option value="0" selected disabled>Selected Device</option>
-                        @foreach ($ipAddress as $address)
-                            <option value={{ $address->ip_address }}> {{ $address->ip_address }}</option>
-                        @endforeach
 
-                    </select>
-
-                </div>
-
-            </div>
-            <div class="flex items-center px-64">
+            <div class="flex items-center ">
                 <form id="uploadUser" class="flex flex-col w-full px-6  h-auto " action=""
                     data-token="{{ csrf_token() }}">
                     @csrf
@@ -42,7 +29,7 @@
                         <select id="ip_address" name="ip_address"
                             class="ip_address w-full py-2.5 px-2.5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-muted_hover hover:text-primary focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                             <option value="0" selected disabled>
-                                <--------- Select IP Address ----------->
+                                <------- Select IP Address ------->
                             </option>
                             @foreach ($ipAddress as $address)
                                 <option value={{ $address->ip_address }}> {{ $address->ip_address }}</option>
@@ -75,6 +62,20 @@
 @endsection
 @push('scripts')
     <script>
+        $(document).ready(function() {
+            getDataTable();
+        });
+
+        function getDataTable(page) {
+            $.ajax({
+                type: "GET",
+                url: "device_user?page=" + page,
+                success: function(response) {
+                    $('#table').html(response);
+                }
+            });
+        }
+
         $('.uploadUser').on('click', function(e) {
             e.preventDefault();
             $ip = $('.ip_address').val();
@@ -96,28 +97,6 @@
                     } else {
                         toastr.error(response.message);
                     }
-                    $('#loader').hide();
-                }
-            });
-
-        }
-        $('#ipaddress').change(function(e) {
-            e.preventDefault();
-            $ip = $('#ipaddress').val();
-            getData($ip);
-        });
-
-        function getData(ip) {
-            $('#loader').show();
-            $.ajax({
-                type: "GET",
-                url: "device_user",
-                data: {
-                    ip_address: ip,
-                },
-                success: function(response) {
-                    console.log(response);
-                    $('#table').html(response);
                     $('#loader').hide();
                 }
             });
